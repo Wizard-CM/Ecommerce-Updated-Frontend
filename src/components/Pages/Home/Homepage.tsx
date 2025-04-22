@@ -120,7 +120,7 @@ const Homepage = () => {
                   href="#"
                   className="group relative overflow-hidden px-8 py-4 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold text-lg shadow-lg hover:shadow-indigo-500/30 transition-all duration-300"
                 >
-                  <span className="relative z-10 flex items-center justify-center">
+                  <Link href="/products" className="relative z-10 flex items-center justify-center" >
                     Shop Now
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -136,12 +136,11 @@ const Homepage = () => {
                         d="M14 5l7 7m0 0l-7 7m7-7H3"
                       />
                     </svg>
-                  </span>
+                  </Link>
                   <span className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                 </Link>
 
-                <Link
-                  href="#"
+                <button
                   className="px-8 py-4 rounded-full border border-indigo-700 text-gray-300 font-semibold text-lg hover:bg-indigo-900/50 hover:border-indigo-500/50 transition-all duration-300 backdrop-blur-sm flex items-center justify-center"
                 >
                   <svg
@@ -159,7 +158,7 @@ const Homepage = () => {
                     />
                   </svg>
                   Learn More
-                </Link>
+                </button>
               </div>
             </div>
 

@@ -147,7 +147,7 @@ const page = () => {
         </div>
         
         {/* Bar Chart Section */}
-        <div className="w-[60%] mb-6 border  border-white/50 rounded-xl">
+        <div className="w-full lg:w-[60%] mb-6 border  border-white/50 rounded-xl">
           <div className="bg-gray-800/80 backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg border border-purple-500/10 transform transition-all duration-300 hover:shadow-purple-500/20">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <h3 className="text-xl font-bold text-white mb-2 md:mb-0">Growth Analytics</h3>

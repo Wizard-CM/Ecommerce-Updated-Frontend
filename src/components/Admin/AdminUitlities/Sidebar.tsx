@@ -8,9 +8,12 @@ import { FaUsers } from "react-icons/fa";
 import { GrTransaction } from "react-icons/gr";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/context/Context";
+import { Home, ShoppingBag, ShoppingCart, Zap } from "lucide-react";
+import UserDropdown from "@/components/Utility/Header/Dropdown";
 
 type LiProps = {
-  onClickHandler: (value: React.SetStateAction<boolean>) => void;
+  onClickHandler: (value: boolean) => void;
   url: string;
   text: string;
   icon: React.ReactNode;
@@ -57,13 +60,13 @@ const LiComponent = ({ onClickHandler, url, text, icon }: LiProps) => {
 
 const AdminSideBar = () => {
   const [screenSize, setScreenSize] = useState(
-    typeof window !== "undefined" ? window.screen.availWidth : 1200
+    typeof window !== "undefined" ? window.innerWidth : 1200
   );
-  const [isOpen, setIsOpen] = useState(false);
+  const { isSidebarOpen, setSidebarOpen } = useAuth();
 
   useEffect(() => {
     const handleResize = () => {
-      setScreenSize(window.screen.availWidth);
+      setScreenSize(window.innerWidth);
     };
 
     window.addEventListener("resize", handleResize);
@@ -72,10 +75,10 @@ const AdminSideBar = () => {
 
   return (
     <>
-      {screenSize < 1000 && !isOpen && (
+      {screenSize < 1000 && !isSidebarOpen && (
         <button
           id="hamburger"
-          onClick={() => setIsOpen(true)}
+          onClick={() => setSidebarOpen(true)}
           className="fixed top-4 left-4 z-50 p-3 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
           aria-label="Open Menu"
         >
@@ -85,41 +88,86 @@ const AdminSideBar = () => {
 
       <div
         className={`bg-gradient-to-br from-black to-gray-900 text-gray-100 h-full w-full border-r  border-r-white/50 transition-all duration-500 shadow-2xl relative overflow-hidden ${
-          isOpen || screenSize >= 1000 ? "translate-x-0" : "-translate-x-full"
+          isSidebarOpen || screenSize >= 1000
+            ? "translate-x-0"
+            : "-translate-x-full"
         }`}
       >
+        {/* BRANDING SECTION */}
+        <div className="p-5 flex items-center space-x-8 mb-4">
+          <Link href="#" className="flex items-center space-x-2 group">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-300">
+              <Zap size={20} className="text-white" />
+            </div>
+            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-indigo-200">
+              YourBrand
+            </span>
+          </Link>
+        </div>
         {/* Decorative background elements */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-purple-600/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/4"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-600/5 rounded-full blur-3xl translate-x-1/3 translate-y-1/4"></div>
 
         <div className="relative z-10">
+          {/* User Section */}
+          <div className="p-5 mt-1">
+            <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-4 px-3 flex items-center">
+              <span className="mr-2 w-1 h-4 bg-gradient-to-b from-indigo-400 to-purple-500 rounded-full inline-block"></span>
+              User
+            </h3>
+            <ul className="space-y-1">
+              <LiComponent
+                onClickHandler={setSidebarOpen}
+                url="/"
+                text="Home"
+                icon={<Home size={18} />}
+              />
+              <LiComponent
+                onClickHandler={setSidebarOpen}
+                url="/products"
+                text="Products"
+                icon={<ShoppingBag size={18} />}
+              />
+              <LiComponent
+                onClickHandler={setSidebarOpen}
+                url="/cart"
+                text="Cart"
+                icon={<ShoppingCart size={18} />}
+              />
+            </ul>
+
+            <div className="cursor-pointer ps-3 pe-5 flex gap-4 my-5">
+              <UserDropdown account={true} />
+            </div>
+          </div>
+
           {/* Dashboard Section */}
-          <div className="p-5 mt-6">
+          <div className="p-5 mt-1">
             <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-4 px-3 flex items-center">
               <span className="mr-2 w-1 h-4 bg-gradient-to-b from-indigo-400 to-purple-500 rounded-full inline-block"></span>
               Dashboard
             </h3>
             <ul className="space-y-1">
               <LiComponent
-                onClickHandler={setIsOpen}
+                onClickHandler={setSidebarOpen}
                 url="/admin/dashboard"
                 text="Dashboard"
                 icon={<MdDashboard />}
               />
               <LiComponent
-                onClickHandler={setIsOpen}
+                onClickHandler={setSidebarOpen}
                 url="/admin/products"
                 text="Products"
                 icon={<MdInventory />}
               />
               <LiComponent
-                onClickHandler={setIsOpen}
+                onClickHandler={setSidebarOpen}
                 url="/admin/customers"
                 text="Customers"
                 icon={<FaUsers />}
               />
               <LiComponent
-                onClickHandler={setIsOpen}
+                onClickHandler={setSidebarOpen}
                 url="/admin/transactions"
                 text="Transactions"
                 icon={<GrTransaction />}
@@ -128,14 +176,14 @@ const AdminSideBar = () => {
           </div>
 
           {/* Charts Section */}
-          <div className="p-5 mt-4">
+          <div className="p-5 mt-1">
             <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-4 px-3 flex items-center">
               <span className="mr-2 w-1 h-4 bg-gradient-to-b from-indigo-400 to-purple-500 rounded-full inline-block"></span>
               Charts
             </h3>
             <ul>
               <LiComponent
-                onClickHandler={setIsOpen}
+                onClickHandler={setSidebarOpen}
                 url="/admin/charts"
                 text="Charts"
                 icon={<FiPieChart />}
@@ -145,12 +193,12 @@ const AdminSideBar = () => {
 
           {/* Mobile Close Button */}
           {screenSize < 1000 && (
-            <div className="p-5 absolute bottom-6 w-full">
+            <div className="p-5 absolute -top-12 -right-2 ">
               <button
-                onClick={() => setIsOpen(false)}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-indigo-700/30 transition-all duration-300 border border-white/10"
+                onClick={() => setSidebarOpen(false)}
+                className="w-full p-2  rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-indigo-700/30 transition-all duration-300 border border-white/10"
               >
-                <FaTimes /> Close Menu
+                <FaTimes /> 
               </button>
             </div>
           )}

@@ -63,7 +63,7 @@ const Header = ({
     <div className={`mx-auto ${padding && "px-4 sm:px-6 lg:px-8"}`} style={{ maxWidth: width }}>
       <div className="flex items-center justify-between py-4 border-b  border-b-white/50">
         <div className="flex items-center space-x-8">
-          <Link href="#" className="flex items-center space-x-2 group">
+          <Link href="/" className="flex items-center space-x-2 group">
             <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-300">
               <Zap size={20} className="text-white" />
             </div>
@@ -85,9 +85,7 @@ const Header = ({
               >
                 {link.icon}
                 <span>{link.name}</span>
-                {pathname === link.link && (
-                  <div className="w-1 h-1 rounded-full bg-indigo-400 ml-1"></div>
-                )}
+    
               </Link>
             ))}
           </nav>
@@ -99,7 +97,7 @@ const Header = ({
           </div>
 
           <Link
-            href="#"
+            href="/products"
             className="hidden sm:inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium text-sm hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-indigo-500/20 group"
           >
             Get Started

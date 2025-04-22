@@ -76,10 +76,10 @@ export function BarC({
     responsive: true,
     plugins: {
       legend: {
-        display: false,
+        display: true,
       },
       title: {
-        display: false,
+        display: true,
       },
     },
     scales: {

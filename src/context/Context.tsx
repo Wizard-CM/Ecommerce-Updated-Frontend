@@ -19,6 +19,9 @@ import { notSetUser, setUser } from "@/Redux/Reducers/userReducer";
 interface AuthContextType {
   signIn: () => Promise<UserCredential>;
   logOut: () => Promise<void>;
+  isSidebarOpen: boolean;
+  toggleSidebar: () => void;
+  setSidebarOpen: (isOpen: boolean) => void;
 }
 
 // Create the context with a default value
@@ -27,6 +30,10 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   // const [user, setUser] = useState<User | null>(null);
   const dispatch = useDispatch();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
+  const setSidebarOpen = (isOpen: boolean) => setIsSidebarOpen(isOpen);
 
   useEffect(() => {
     // This function gets trigged when a user logs in or logs out from the firebase
@@ -55,7 +62,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ signIn, logOut }}>
+    <AuthContext.Provider value={{ signIn, logOut, isSidebarOpen, toggleSidebar, setSidebarOpen }}>
       {children}
       <Toaster
         position="top-right"

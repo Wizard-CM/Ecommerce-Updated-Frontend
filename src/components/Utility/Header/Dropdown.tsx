@@ -5,9 +5,13 @@ import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import Cookies from "js-cookie"
+import Cookies from "js-cookie";
 
-export default function UserDropdown() {
+export default function UserDropdown({
+  account = false,
+}: {
+  account?: boolean;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const router = useRouter();
@@ -23,11 +27,10 @@ export default function UserDropdown() {
     signOut(auth)
       .then(() => {
         toast.success("Signed Out Successfully");
-        Cookies.set("userAuthStatus","null")
+        Cookies.set("userAuthStatus", "null");
       })
       .catch((error) => {
-        
-        console.log(error)
+        console.log(error);
         toast.success("Failed Signing Out");
       });
   };
@@ -46,39 +49,42 @@ export default function UserDropdown() {
     };
   }, []);
 
-  console.log(user?.role,"User role")
+  console.log(user?.role, "User role");
 
   return (
     <div className="relative " ref={dropdownRef}>
       {/* User Button */}
       <button
         onClick={toggleDropdown}
-        className="p-1 rounded-full border border-indigo-700 text-gray-400 hover:text-indigo-300 hover:border-indigo-600 transition-all duration-200 cursor-pointer"
+        className="transition-all duration-200 cursor-pointer flex gap-3"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-          />
-        </svg>
+        <span className="border rounded-full p-1 border-indigo-700 text-gray-400 hover:text-indigo-300 hover:border-indigo-600">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            />
+          </svg>
+        </span>
+
+        {account && "Account"}
       </button>
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg z-20 transform transition ease-out duration-200">
+        <div className="absolute left-0 mt-3 w-48 rounded-md shadow-lg z-20 transform transition ease-out duration-200">
           <div className="bg-gradient-to-br from-black to-gray-900 rounded-lg ring-1 ring-indigo-700 ring-opacity-40 shadow-xl overflow-hidden">
             {user?.role == "admin" && (
-            
               <div
                 className="cursor-pointer w-full text-left px-4 py-2 text-gray-100 hover:bg-gray-800 transition-colors duration-150 flex items-center gap-2 "
                 onClick={() => {
