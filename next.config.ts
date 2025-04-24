@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   // next.config.js
 
   images: {
-    domains: ["images.unsplash.com","encrypted-tbn0.gstatic.com","ecommerce-server-fnx7.onrender.com"],
+    domains: ["images.unsplash.com","encrypted-tbn0.gstatic.com","res.cloudinary.com"],
   },
 };
 

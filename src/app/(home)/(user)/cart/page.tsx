@@ -1,10 +1,8 @@
 "use client";
 
 import { useDispatch, useSelector } from "react-redux";
-
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-
 import { FaTrash, FaPlus, FaMinus, FaShoppingCart } from "react-icons/fa";
 import {
   updateCartItem,
@@ -22,6 +20,7 @@ import {
 import { productType } from "@/types/API-Types";
 import ToasterFunction from "@/components/Utility/ToasterFunction";
 import Link from "next/link";
+import { useAuth } from "@/context/Context";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -29,6 +28,15 @@ const Cart = () => {
   const [deleteFromCartBackend] = useDeleteFromCartMutation();
   const { user } = useSelector((state: rootState) => state.userSlice);
   const { products } = useSelector((state: rootState) => state.cartSlice);
+
+  // Coupon code state
+  const [inputCouponCode, setInputCouponCode] = useState<string>("");
+  const [discountPercentage, setDiscountPercentage] = useState<number>(0);
+  const [couponApplied, setCouponApplied] = useState<boolean>(false);
+  const [couponMessage, setCouponMessage] = useState<string>("");
+
+  // Get coupon code from global context
+  const { couponCode } = useAuth();
 
   // Handlers
 
@@ -75,6 +83,22 @@ const Cart = () => {
     ToasterFunction(res, "Cart Item Successfully Removed");
   };
 
+  // Apply Coupon Code Handler
+  const applyCouponCode = () => {
+    if (inputCouponCode === couponCode) {
+      // Generate random discount percentage between 1-50%
+      const randomDiscount = Math.floor(Math.random() * 50) + 1;
+      setDiscountPercentage(randomDiscount);
+      setCouponApplied(true);
+      setCouponMessage(`${randomDiscount}% discount applied!`);
+
+    } else {
+      setCouponApplied(false);
+      setDiscountPercentage(0);
+      setCouponMessage("Invalid coupon code");
+    }
+  };
+
   useEffect(() => {
     const res = axios.get(
       `${process.env.NEXT_PUBLIC_VITE_BACKEND_SERVER}/api/v1/cart/${user?._id}`
@@ -93,13 +117,17 @@ const Cart = () => {
   }, 0);
   const shippingCharge = subTotal < 10000 ? 0 : 100;
   const tax = Math.round((subTotal + shippingCharge) * 0.13);
-  const discount = 0;
+
+  // Calculate discount amount based on percentage
+  const discount = couponApplied
+    ? Math.round((subTotal * discountPercentage) / 100)
+    : 0;
+
   const total = subTotal + shippingCharge + tax - discount;
   const orderQuantity = products.reduce(
     (acc, curr) => (acc += curr.quantity!),
     0
   );
-  console.log(orderQuantity);
 
   useEffect(() => {
     if (total) {
@@ -114,7 +142,7 @@ const Cart = () => {
         })
       );
     }
-  }, [total, subTotal, orderQuantity]);
+  }, [total, subTotal, orderQuantity, discount]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black to-gray-900 text-gray-100 py-10 px-4 sm:px-6 lg:px-8">
@@ -228,11 +256,37 @@ const Cart = () => {
             </div>
 
             <div className="mt-6">
-              <input
-                type="text"
-                placeholder="Coupon Code"
-                className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"
-              />
+              <div className="relative mb-4">
+                <div className="flex">
+                  <input
+                    type="text"
+                    placeholder="Coupon Code"
+                    className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    value={inputCouponCode}
+                    onChange={(e) => setInputCouponCode(e.target.value)}
+                  />
+                  <button
+                    onClick={applyCouponCode}
+                    className="ml-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors"
+                  >
+                    Apply
+                  </button>
+                </div>
+                {couponMessage && (
+                  <div
+                    className={`mt-2 text-sm ${
+                      couponApplied ? "text-green-400" : "text-red-400"
+                    }`}
+                  >
+                    {couponMessage}
+                  </div>
+                )}
+                {couponApplied && (
+                  <div className="mt-2 text-green-400 font-medium">
+                    Discount applied: ₹{discount} ({discountPercentage}% off)
+                  </div>
+                )}
+              </div>
 
               {products.length >= 1 && (
                 <Link

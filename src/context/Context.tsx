@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import {
   onAuthStateChanged,
   signInWithPopup,
@@ -22,6 +22,8 @@ interface AuthContextType {
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
   setSidebarOpen: (isOpen: boolean) => void;
+  couponCode: string | null;
+  setCouponCode: Dispatch<SetStateAction<string | null>>
 }
 
 // Create the context with a default value
@@ -31,8 +33,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // const [user, setUser] = useState<User | null>(null);
   const dispatch = useDispatch();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [couponCode, setCouponCode] = useState<string | null>("hero70");
 
-  const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
+  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
   const setSidebarOpen = (isOpen: boolean) => setIsSidebarOpen(isOpen);
 
   useEffect(() => {
@@ -62,7 +65,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ signIn, logOut, isSidebarOpen, toggleSidebar, setSidebarOpen }}>
+    <AuthContext.Provider
+      value={{ signIn, logOut, isSidebarOpen, toggleSidebar, setSidebarOpen,couponCode, setCouponCode }}
+    >
       {children}
       <Toaster
         position="top-right"

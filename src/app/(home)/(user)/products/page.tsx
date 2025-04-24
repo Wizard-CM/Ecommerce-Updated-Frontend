@@ -73,6 +73,12 @@ const page = () => {
       (i: productType) => i._id === product._id
     );
 
+    console.log(product,"added product")
+
+    if (product?.stock == 0) {
+      return toast.error(`Product Out of Stock`);
+    }
+
     if (cartAddedProduct?.quantity! >= cartAddedProduct?.stock!) {
       return;
     }

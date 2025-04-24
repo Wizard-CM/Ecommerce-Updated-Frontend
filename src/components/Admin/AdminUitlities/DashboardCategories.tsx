@@ -1,256 +1,202 @@
 import { useState } from "react";
-import { Package, Grid, PieChart, List } from "lucide-react";
+import { Package, Grid, PieChart } from "lucide-react";
 
-// Define TypeScript interfaces for our data
-interface CategoryData {
-  [key: string]: number; // Maps category names to percentage values
+// Updated interfaces to work with string array input
+interface InventoryCategoriesProps {
+  categories?: string[];
+  title?: string;
 }
 
-interface InventoryPanelProps {
-  categoryArray: string[]; // Array of category names
-  categoryData: CategoryData; // Object mapping category names to percentages
-}
-
-interface CategoryComponentProps {
-  title: string;
-  color: string;
-  percentage: number;
-}
-
-interface SegmentData {
-  category: string;
-  percentage: number;
-  color: string;
-  segmentLength: number;
-  offset: number;
-}
-
-// Hex Grid Visualization Component
-const HexGridVisualization: React.FC<InventoryPanelProps> = ({
-  categoryArray,
-  categoryData,
+const InventoryCategories: React.FC<InventoryCategoriesProps> = ({
+  categories = [],
+  title = "INVENTORY"
 }) => {
-  const sortedCategories: string[] = [...categoryArray].sort(
-    (a, b) => categoryData[b] - categoryData[a]
-  );
+  // State management
+  type VisualizationType = "card" | "circular";
+  const [visualizationType, setVisualizationType] = useState<VisualizationType>("card");
 
-  return (
-    <div className="grid grid-cols-3 md:grid-cols-5 gap-2 my-4">
-      {sortedCategories.map((category: string) => {
-        const percentage: number = categoryData[category];
-        const color: string = `hsl(${percentage * 5}, ${percentage * 7}%, 50%)`;
-        return (
-          <div key={category} className="relative flex justify-center">
-            <div
-              className="w-16 h-16 cursor-pointer transform transition-transform hover:scale-110 relative"
-              title={`${category}: ${percentage}%`}
-            >
-              <svg viewBox="0 0 100 100" className="w-full h-full">
-                <polygon
-                  points="50 1, 95 25, 95 75, 50 99, 5 75, 5 25"
-                  style={{
-                    fill: color,
-                    opacity: 0.2 + (percentage / 100) * 0.8,
-                    stroke: color,
-                    strokeWidth: "4",
-                  }}
-                />
-                <text
-                  x="50"
-                  y="40"
-                  textAnchor="middle"
-                  className="text-xs font-bold fill-current text-white"
-                  style={{ fontSize: "14px" }}
-                >
-                  {percentage}%
-                </text>
-              </svg>
-              <div className="absolute inset-0 flex items-end justify-center pb-1">
-                <span className="text-xs font-medium text-white truncate max-w-full px-1">
-                  {category.length > 8
-                    ? `${category.substring(0, 6)}...`
-                    : category}
-                </span>
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-};
+  // Transform string array into consistent format with default counts
+  const processedCategories = categories.map((category, index) => ({
+    id: `cat-${index}`,
+    name: category,
+    count: 1 // Default count of 1 for each category
+  }));
 
-// Circular Visualization Component
-const CircularVisualization: React.FC<InventoryPanelProps> = ({
-  categoryArray,
-  categoryData,
-}) => {
-  const radius: number = 40;
-  const strokeWidth: number = 12;
-  const circumference: number = 2 * Math.PI * radius;
+  // Get color based on index for consistent coloring
+  const getColor = (index: number): string => {
+    const colors = [
+      "#8B5CF6", // purple
+      "#6D28D9", // purple darker
+      "#4C1D95", // purple darkest
+      "#9333EA", // purple-600
+      "#7E22CE", // purple-700
+      "#6B21A8"  // purple-800
+    ];
+    
+    return colors[index % colors.length];
+  };
 
-  let offset: number = 0;
+  // Total count is just the number of categories now
+  const totalCount = processedCategories.length;
 
-  const segments: SegmentData[] = categoryArray.map((category: string) => {
-    const percentage: number = categoryData[category];
-    const segmentLength: number = (percentage / 100) * circumference;
-    const color: string = `hsl(${percentage * 5}, ${percentage * 7}%, 50%)`;
-    const currentOffset: number = offset;
-    offset += segmentLength;
+  // Circular Visualization Component
+  const CircularVisualization: React.FC = () => {
+    // Handle empty categories
+    if (processedCategories.length === 0) {
+      return (
+        <div className="flex justify-center items-center h-40">
+          <p className="text-gray-400">No categories available</p>
+        </div>
+      );
+    }
 
-    return {
-      category,
-      percentage,
-      color,
-      segmentLength,
-      offset: currentOffset,
-    };
-  });
+    const radius = 40;
+    const strokeWidth = 12;
+    const circumference = 2 * Math.PI * radius;
+    
+    // Equal segments for visualization
+    const segmentLength = circumference / processedCategories.length;
+    
+    const segments = processedCategories.map((category, index) => {
+      const color = getColor(index);
+      const offset = index * segmentLength;
 
-  return (
-    <div className="flex flex-col items-center my-6">
-      <div className="relative w-32 h-32">
-        <svg width="100%" height="100%" viewBox="0 0 100 100">
-          <circle
-            cx="50"
-            cy="50"
-            r={radius}
-            fill="transparent"
-            stroke="#374151"
-            strokeWidth={strokeWidth}
-            className="opacity-30"
-          />
-          {segments.map((segment: SegmentData, index: number) => (
+      return {
+        category,
+        color,
+        segmentLength,
+        offset,
+      };
+    });
+
+    return (
+      <div className="flex flex-col items-center my-4">
+        <div className="relative w-32 h-32">
+          <svg width="100%" height="100%" viewBox="0 0 100 100">
             <circle
-              key={index}
               cx="50"
               cy="50"
               r={radius}
               fill="transparent"
-              stroke={segment.color}
+              stroke="#374151"
               strokeWidth={strokeWidth}
-              strokeDasharray={circumference}
-              strokeDashoffset={circumference - segment.offset}
-              transform="rotate(-90 50 50)"
-              style={{
-                transition: "stroke-dashoffset 1s ease-in-out",
-              }}
+              className="opacity-30"
             />
-          ))}
-          <text
-            x="50"
-            y="50"
-            textAnchor="middle"
-            dy="0.3em"
-            className="fill-current text-white text-lg font-bold"
-          >
-            {categoryArray.length}
-          </text>
-        </svg>
-      </div>
+            {segments.map((segment, index) => (
+              <circle
+                key={index}
+                cx="50"
+                cy="50"
+                r={radius}
+                fill="transparent"
+                stroke={segment.color}
+                strokeWidth={strokeWidth}
+                strokeDasharray={`${segment.segmentLength} ${circumference - segment.segmentLength}`}
+                strokeDashoffset={-segment.offset}
+                transform="rotate(-90 50 50)"
+                style={{
+                  transition: "stroke-dashoffset 0.5s ease-in-out",
+                }}
+              />
+            ))}
+            <text
+              x="50"
+              y="50"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              className="fill-current text-white text-lg font-bold"
+            >
+              {totalCount}
+            </text>
+          </svg>
+        </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-4 w-full">
-        {segments.map((segment: SegmentData, index: number) => (
-          <div key={index} className="flex items-center gap-2">
-            <div
-              className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: segment.color }}
-            ></div>
-            <div className="flex-1 text-sm font-medium text-white truncate">
-              {segment.category}
-            </div>
-            <div className="text-sm font-bold text-white">
-              {segment.percentage}%
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// Card Visualization Component
-const CardVisualization: React.FC<InventoryPanelProps> = ({
-  categoryArray,
-  categoryData,
-}) => {
-  const sortedCategories: string[] = [...categoryArray].sort(
-    (a, b) => categoryData[b] - categoryData[a]
-  );
-
-  return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 my-4">
-      {sortedCategories.map((category: string) => {
-        const percentage: number = categoryData[category];
-        const color: string = `hsl(${percentage * 5}, ${percentage * 7}%, 50%)`;
-        const sizeClass: string =
-          percentage > 70
-            ? "col-span-2 row-span-2"
-            : percentage > 40
-            ? "col-span-1 row-span-2"
-            : "col-span-1 row-span-1";
-
-        return (
-          <div
-            key={category}
-            className={`${sizeClass} relative rounded-lg overflow-hidden bg-gray-800/40 hover:bg-gray-800/60 transition-all duration-300 flex flex-col justify-between`}
-            style={{
-              boxShadow: `0 0 15px ${color}33`,
-            }}
-          >
-            <div
-              className="absolute bottom-0 left-0 right-0 h-1"
-              style={{ backgroundColor: color }}
-            ></div>
-            <div className="p-3">
-              <h3 className="font-medium text-white text-sm md:text-base truncate">
-                {category}
-              </h3>
-            </div>
-            <div className="p-3 flex items-end justify-between">
+        <div className="grid grid-cols-2 gap-2 mt-4 w-full">
+          {segments.map((segment, index) => (
+            <div key={index} className="flex items-center gap-2 bg-gray-800/30 p-2 rounded-lg">
               <div
-                className="rounded-full px-2 py-0.5 text-xs font-bold text-white"
-                style={{ backgroundColor: color }}
-              >
-                {percentage}%
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: segment.color }}
+              ></div>
+              <div className="flex-1 text-xs font-medium text-white truncate">
+                {segment.category.name}
               </div>
             </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-};
+          ))}
+        </div>
+      </div>
+    );
+  };
 
-// Main component with visualization switching
-const InventoryPanel: React.FC<InventoryPanelProps> = ({
-  categoryArray,
-  categoryData,
-}) => {
-  type VisualizationType = "hex" | "circular" | "card";
-  const [visualizationType, setVisualizationType] =
-    useState<VisualizationType>("hex");
+  // Card Visualization Component
+  const CardVisualization: React.FC = () => {
+    // Handle empty categories
+    if (processedCategories.length === 0) {
+      return (
+        <div className="flex justify-center items-center h-40">
+          <p className="text-gray-400">No categories available</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-2 gap-2 my-3">
+        {processedCategories.map((category, index) => {
+          const color = getColor(index);
+
+          return (
+            <div
+              key={category.id}
+              className="relative rounded-lg overflow-hidden bg-gray-800/40 hover:bg-gray-800/60 transition-all flex flex-col justify-between"
+              style={{
+                boxShadow: `0 0 10px ${color}33`,
+              }}
+            >
+              <div
+                className="absolute bottom-0 left-0 right-0 h-1"
+                style={{ backgroundColor: color }}
+              ></div>
+              <div className="p-2">
+                <h3 className="font-medium text-white text-sm truncate">
+                  {category.name}
+                </h3>
+              </div>
+              <div className="p-2 flex items-end justify-between">
+                <div
+                  className="rounded-full px-2 py-0.5 text-xs font-bold text-white"
+                  style={{ backgroundColor: color }}
+                >
+                  #{index + 1}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
   return (
-    <div className="w-full bg-gradient-to-br from-black to-gray-900 rounded-xl shadow-lg p-5 border  border-white/50">
-      <div className="flex items-center justify-between mb-4 border-b border-gray-700/50 pb-3">
+    <div className="bg-gradient-to-br from-black to-gray-900 rounded-lg shadow-lg p-3 border border-white/10">
+      {/* Header Section */}
+      <div className="flex items-center justify-between mb-3 border-b border-gray-700/50 pb-2">
         <div className="flex items-center gap-2">
-          <Package className="text-indigo-400" size={20} />
-          <h3 className="text-lg md:text-xl font-semibold text-white">
-            INVENTORY
+          <Package className="text-indigo-400" size={18} />
+          <h3 className="text-base font-semibold text-white">
+            {title}
           </h3>
         </div>
         <div className="flex gap-1">
           <button
-            onClick={() => setVisualizationType("hex")}
+            onClick={() => setVisualizationType("card")}
             className={`p-1.5 rounded-md transition-colors ${
-              visualizationType === "hex"
+              visualizationType === "card"
                 ? "bg-gradient-to-r from-indigo-600 to-purple-600"
                 : "bg-gray-800"
             }`}
-            title="Hex Grid View"
+            title="Card View"
           >
-            <Grid size={16} className="text-white" />
+            <Grid size={14} className="text-white" />
           </button>
           <button
             onClick={() => setVisualizationType("circular")}
@@ -261,47 +207,29 @@ const InventoryPanel: React.FC<InventoryPanelProps> = ({
             }`}
             title="Circular View"
           >
-            <PieChart size={16} className="text-white" />
-          </button>
-          <button
-            onClick={() => setVisualizationType("card")}
-            className={`p-1.5 rounded-md transition-colors ${
-              visualizationType === "card"
-                ? "bg-gradient-to-r from-indigo-600 to-purple-600"
-                : "bg-gray-800"
-            }`}
-            title="Card View"
-          >
-            <List size={16} className="text-white" />
+            <PieChart size={14} className="text-white" />
           </button>
         </div>
       </div>
 
-      <div className="overflow-y-auto max-h-[500px] custom-scrollbar pr-1">
-        {visualizationType === "hex" && (
-          <HexGridVisualization
-            categoryArray={categoryArray}
-            categoryData={categoryData}
-          />
-        )}
-
-        {visualizationType === "circular" && (
-          <CircularVisualization
-            categoryArray={categoryArray}
-            categoryData={categoryData}
-          />
-        )}
-
-        {visualizationType === "card" && (
-          <CardVisualization
-            categoryArray={categoryArray}
-            categoryData={categoryData}
-          />
-        )}
+      {/* Main Content */}
+      <div className="overflow-y-auto max-h-96">
+        {visualizationType === "circular" && <CircularVisualization />}
+        {visualizationType === "card" && <CardVisualization />}
       </div>
 
+      {/* Footer */}
+      <div className="mt-3 pt-2 border-t border-gray-800 flex justify-between items-center text-xs text-gray-400">
+        <div>
+          {processedCategories.length} Categories
+        </div>
+        <div>
+          Total: <span className="font-bold text-white">{totalCount}</span>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default InventoryPanel;
+export default InventoryCategories;
+

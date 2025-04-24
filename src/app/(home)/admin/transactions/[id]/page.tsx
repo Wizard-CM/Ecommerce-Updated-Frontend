@@ -90,13 +90,16 @@ const TransactionManagement = ({ params }: { params: Promise<Params> }) => {
                     className="flex flex-col sm:flex-row bg-gray-900 rounded-lg overflow-hidden hover:bg-gray-800 transition-all duration-300"
                   >
                     <div className="relative h-40 sm:h-24 sm:w-24 md:h-32 md:w-32 overflow-hidden bg-gray-700 flex-shrink-0">
-                      <Image
+                      {
+                        item?.photo &&        <Image
                         src={`${item?.photo}`}
                         alt={item?.name || "Product image"}
                         layout="fill"
                         objectFit="cover"
                         className="transition-transform duration-300 hover:scale-110"
                       />
+                      }
+     
                     </div>
                     <div className="p-4 flex-1 flex flex-col justify-between">
                       <div>

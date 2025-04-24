@@ -15,7 +15,7 @@ import { BarChart } from "@/components/Admin/Charts/Barcharts/Barchart";
 import PageLoader from "@/components/Utility/PageLoader";
 import { TrendingUp, TrendingDown, Circle } from "lucide-react";
 import WidgetComponent from "@/components/Admin/AdminUitlities/WidgetComponent";
-import InventoryPanel from "@/components/Admin/AdminUitlities/DashboardCategories";
+import InventoryCategories from "@/components/Admin/AdminUitlities/DashboardCategories";
 
 const userImg =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJxA5cTf-5dh5Eusm0puHbvAhOrCRPtckzjA&usqp";
@@ -127,9 +127,8 @@ const Dashboard = () => {
 
           {/* Inventory Panel - Use your existing component */}
           <div className="w-[27%]">
-            <InventoryPanel
-              categoryArray={categoryArray}
-              categoryData={categoryData}
+            <InventoryCategories
+              categories={categoryArray}
             />
           </div>
         </div>
