@@ -28,6 +28,7 @@ export default function UserDropdown({
       .then(() => {
         toast.success("Signed Out Successfully");
         Cookies.set("userAuthStatus", "null");
+        router.push("/signin");
       })
       .catch((error) => {
         console.log(error);
