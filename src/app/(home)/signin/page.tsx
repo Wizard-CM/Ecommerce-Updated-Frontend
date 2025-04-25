@@ -5,6 +5,7 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import { FaSpinner } from "react-icons/fa";
 
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import toast from "react-hot-toast";
@@ -20,6 +21,7 @@ import Cookies from "js-cookie";
 const Login = () => {
   const [gender, setGender] = useState<string>("");
   const [dob, setDob] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const [login] = useCreateNewUserMutation();
   const dispatch = useDispatch();
   const { user: UserData } = useSelector((state: rootState) => state.userSlice);
@@ -28,6 +30,7 @@ const Login = () => {
   //   Handlers
   const loginHandler = async () => {
     try {
+      setLoading(true);
       const provider = new GoogleAuthProvider();
       const { user } = await signInWithPopup(auth, provider);
 
@@ -40,7 +43,7 @@ const Login = () => {
         uid: user.uid,
       });
 
-      if ("data" in res) {
+      if ("data" in res && res.data) {
         const userSetData: userTypeSample = {
           username: res.data.userData.username,
           email: res.data.userData.email,
@@ -50,12 +53,12 @@ const Login = () => {
           _id: res.data.userData._id,
           role: res.data.userData.role,
         };
-        dispatch(setUser(userSetData));
         Cookies.set("userAuthStatus", JSON.stringify(userSetData));
-
-        console.log(UserData);
-        ToasterFunction(res, `Welcome Back ${user.displayName!}`);
-        return router.push("/");
+        
+        ToasterFunction(res, `Welcome ${user.displayName!}`);
+        router.push("/");
+        dispatch(setUser(userSetData));
+        return null;
       } else {
         const err = res.error as FetchBaseQueryError;
         const message = (err.data as fetchResponseError).message;
@@ -64,6 +67,9 @@ const Login = () => {
       }
     } catch (error) {
       console.log(error);
+      toast.error("Sign in failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,7 +84,7 @@ const Login = () => {
       <div className="max-w-md w-full space-y-8 bg-gray-800 bg-opacity-50 p-10 rounded-xl shadow-2xl backdrop-blur-sm">
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-extrabold text-white tracking-tight">
-            Welcome Back
+            Welcome 
           </h2>
           <p className="mt-2 text-sm text-gray-300">
             Sign in to access your account
@@ -135,12 +141,17 @@ const Login = () => {
             <button
               type="button"
               onClick={loginHandler}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 transform hover:scale-[1.02]"
+              disabled={loading}
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
             >
               <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <FcGoogle className="h-5 w-5" />
+                {loading ? (
+                  <FaSpinner className="h-5 w-5 animate-spin text-white" />
+                ) : (
+                  <FcGoogle className="h-5 w-5" />
+                )}
               </span>
-              Sign in with Google
+              {loading ? "Signing in..." : "Sign in with Google"}
             </button>
           </div>
         </form>
