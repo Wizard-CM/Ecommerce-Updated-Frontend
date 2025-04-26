@@ -9,7 +9,7 @@ interface InventoryCategoriesProps {
 
 const InventoryCategories: React.FC<InventoryCategoriesProps> = ({
   categories = [],
-  title = "INVENTORY"
+  title = "INVENTORY CATEGORIES"
 }) => {
   // State management
   type VisualizationType = "card" | "circular";
@@ -189,7 +189,7 @@ const InventoryCategories: React.FC<InventoryCategoriesProps> = ({
         <div className="flex gap-1">
           <button
             onClick={() => setVisualizationType("card")}
-            className={`p-1.5 rounded-md transition-colors ${
+            className={`p-1.5 rounded-md transition-colors cursor-pointer ${
               visualizationType === "card"
                 ? "bg-gradient-to-r from-indigo-600 to-purple-600"
                 : "bg-gray-800"
@@ -200,7 +200,7 @@ const InventoryCategories: React.FC<InventoryCategoriesProps> = ({
           </button>
           <button
             onClick={() => setVisualizationType("circular")}
-            className={`p-1.5 rounded-md transition-colors ${
+            className={`p-1.5 rounded-md transition-colors cursor-pointer ${
               visualizationType === "circular"
                 ? "bg-gradient-to-r from-indigo-600 to-purple-600"
                 : "bg-gray-800"

@@ -20,7 +20,7 @@ const Newsletter = () => {
           />
           <button
             type="submit"
-            className="bg-indigo-600 px-6 py-3 rounded-full font-medium hover:bg-indigo-700 transition-colors duration-300"
+            className="bg-indigo-600 px-6 py-3 rounded-full font-medium hover:bg-indigo-700 transition-colors duration-300 cursor-pointer"
           >
             Subscribe
           </button>

@@ -209,7 +209,7 @@ const Cart = () => {
                         <FaPlus className="text-xs" />
                       </button>
                       <button
-                        className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 transition-colors ml-2"
+                        className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 transition-colors ml-2 cursor-pointer"
                         onClick={() => cartItemRemoveHandler(i?._id)}
                       >
                         <FaTrash className="text-xs" />
@@ -267,7 +267,7 @@ const Cart = () => {
                   />
                   <button
                     onClick={applyCouponCode}
-                    className="ml-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors"
+                    className="ml-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors cursor-pointer"
                   >
                     Apply
                   </button>

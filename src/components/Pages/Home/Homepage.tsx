@@ -141,7 +141,7 @@ const Homepage = () => {
                 </Link>
 
                 <button
-                  className="px-8 py-4 rounded-full border border-indigo-700 text-gray-300 font-semibold text-lg hover:bg-indigo-900/50 hover:border-indigo-500/50 transition-all duration-300 backdrop-blur-sm flex items-center justify-center"
+                  className="px-8 py-4 rounded-full border border-indigo-700 text-gray-300 font-semibold text-lg hover:bg-indigo-900/50 hover:border-indigo-500/50 transition-all duration-300 backdrop-blur-sm flex items-center justify-center cursor-pointer"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -198,7 +198,7 @@ const Homepage = () => {
                       </div>
 
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <button className="w-16 h-16 rounded-full bg-indigo-600/90 text-white flex items-center justify-center hover:bg-indigo-700 transition-colors duration-300 transform group-hover:scale-110 transition-transform shadow-lg shadow-indigo-500/50">
+                        <button className="w-16 h-16 rounded-full bg-indigo-600/90 text-white flex items-center justify-center hover:bg-indigo-700 transition-colors duration-300 transform group-hover:scale-110 transition-transform shadow-lg shadow-indigo-500/50 cursor-pointer">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-8 w-8"

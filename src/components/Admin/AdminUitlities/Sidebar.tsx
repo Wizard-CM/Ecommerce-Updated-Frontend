@@ -79,7 +79,7 @@ const AdminSideBar = () => {
         <button
           id="hamburger"
           onClick={() => setSidebarOpen(true)}
-          className="fixed top-4 left-4 z-50 p-3 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+          className="fixed top-4 left-4 z-50 p-3 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer"
           aria-label="Open Menu"
         >
           <HiMenuAlt4 className="text-xl" />
@@ -100,7 +100,6 @@ const AdminSideBar = () => {
               <Zap size={20} className="text-white" />
             </div>
             <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-indigo-200">
-              YourBrand
             </span>
           </Link>
         </div>
@@ -196,7 +195,7 @@ const AdminSideBar = () => {
             <div className="p-5 absolute -top-12 -right-2 ">
               <button
                 onClick={() => setSidebarOpen(false)}
-                className="w-full p-2  rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-indigo-700/30 transition-all duration-300 border border-white/10"
+                className="w-full p-2  rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-indigo-700/30 transition-all duration-300 border border-white/10 cursor-pointer"
               >
                 <FaTimes /> 
               </button>

@@ -100,7 +100,7 @@ const Footer = () => {
           <p>© {new Date().getFullYear()} ShopVibe. All rights reserved.</p>
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="text-indigo-400 hover:text-indigo-300"
+            className="text-indigo-400 hover:text-indigo-300 cursor-pointer"
             aria-label="Back to top"
           >
             Back to Top

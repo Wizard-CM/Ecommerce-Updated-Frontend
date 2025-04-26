@@ -16,7 +16,7 @@ const Banner = () => {
           </p>
           <button
             onClick={() => setBannerVisible(false)}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-300 hover:text-white"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-300 hover:text-white cursor-pointer"
             aria-label="Close banner"
           >
             ✕

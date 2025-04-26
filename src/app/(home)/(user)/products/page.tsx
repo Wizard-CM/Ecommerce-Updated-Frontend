@@ -278,7 +278,7 @@ const page = () => {
               {/* Apply Filters Button */}
               <button
                 type="button"
-                className="w-full py-2.5 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-lg shadow-md hover:shadow-indigo-500/20 transition-all duration-200 flex items-center justify-center"
+                className="w-full py-2.5 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-lg shadow-md hover:shadow-indigo-500/20 transition-all duration-200 flex items-center justify-center cursor-pointer"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -416,7 +416,7 @@ const page = () => {
                     className={`px-3 py-2 rounded-lg font-medium ${
                       page === 0
                         ? "bg-gray-800/50 text-gray-500 cursor-not-allowed"
-                        : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                        : "bg-gray-800 text-gray-300 hover:bg-gray-700 cursor-pointer"
                     }`}
                     onClick={() => {
                       if (page > 0) setPage((prev) => prev - 1);
@@ -448,8 +448,8 @@ const page = () => {
                         key={index}
                         className={`w-10 h-10 flex items-center justify-center rounded-lg font-medium ${
                           page === i - 1
-                            ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/20"
-                            : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                            ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/20 cursor-pointer"
+                            : "bg-gray-800 text-gray-300 hover:bg-gray-700 cursor-pointer"
                         }`}
                         onClick={() => {
                           setPage(i - 1);
@@ -466,7 +466,7 @@ const page = () => {
 
                   {data?.totalPages! > 3 && (
                     <button
-                      className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-indigo-500/25 transition-all duration-300 flex items-center"
+                      className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-indigo-500/25 transition-all duration-300 flex items-center cursor-pointer"
                       onClick={() => {
                         if (page < data?.totalPages! - 1) {
                           setPage((prev) => prev + 1);

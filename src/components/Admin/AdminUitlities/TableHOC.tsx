@@ -112,7 +112,7 @@ import {
                   disabled={!canPreviousPage}
                   className={`flex items-center justify-center px-3 py-2 text-sm md:text-base rounded-md transition-all ${
                     canPreviousPage 
-                      ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:opacity-90" 
+                      ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:opacity-90 cursor-pointer" 
                       : "bg-gray-700 text-gray-400 cursor-not-allowed"
                   }`}
                 >
@@ -129,7 +129,7 @@ import {
                   disabled={!canNextPage}
                   className={`flex items-center justify-center px-3 py-2 text-sm md:text-base rounded-md transition-all ${
                     canNextPage 
-                      ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:opacity-90" 
+                      ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:opacity-90 cursor-pointer" 
                       : "bg-gray-700 text-gray-400 cursor-not-allowed"
                   }`}
                 >

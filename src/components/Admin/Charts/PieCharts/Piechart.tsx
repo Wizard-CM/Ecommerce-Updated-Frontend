@@ -143,7 +143,7 @@ const Pie = () => {
         <div className="mt-8 flex justify-center">
           <button
             onClick={() => router.push("/admin/dashboard")}
-            className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity"
+            className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity cursor-pointer"
           >
             Back to Dashboard
           </button>

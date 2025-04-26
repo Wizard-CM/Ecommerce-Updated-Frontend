@@ -95,7 +95,7 @@ const Shipping = () => {
           <button
             type="button"
             onClick={() => router.push("/cart")}
-            className="flex items-center text-gray-300 hover:text-white transition-colors"
+            className="flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
           >
             <FiArrowLeft className="mr-2" />
             <span>Back to Cart</span>
@@ -229,7 +229,7 @@ const Shipping = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-4 px-4 rounded-lg font-medium flex items-center justify-center transition-all duration-300"
+                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-4 px-4 rounded-lg font-medium flex items-center justify-center transition-all duration-300 cursor-pointer"
               >
                 {isLoading ? (
                   <FetchLoader text="Processing..." />

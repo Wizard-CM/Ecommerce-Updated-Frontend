@@ -94,9 +94,6 @@ const Header = ({
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-300">
                 <Zap size={20} className="text-white" />
               </div>
-              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-indigo-200">
-                YourBrand
-              </span>
             </Link>
 
             <nav className="hidden md:flex items-center space-x-6">
@@ -134,7 +131,7 @@ const Header = ({
             </Link>
 
             <button 
-              className="md:hidden p-2 text-gray-400 hover:text-indigo-300 transition-colors duration-200 rounded-md hover:bg-gray-800/50"
+              className="md:hidden p-2 text-gray-400 hover:text-indigo-300 transition-colors duration-200 rounded-md hover:bg-gray-800/50 cursor-pointer"
               onClick={toggleMobileSidebar}
               aria-label="Toggle mobile menu"
             >
@@ -168,7 +165,7 @@ const Header = ({
               </span>
             </Link>
             <button 
-              className="p-2 text-gray-400 hover:text-indigo-300 rounded-md hover:bg-gray-800/50"
+              className="p-2 text-gray-400 hover:text-indigo-300 rounded-md hover:bg-gray-800/50 cursor-pointer"
               onClick={toggleMobileSidebar}
               aria-label="Close mobile menu"
             >
