@@ -42,7 +42,6 @@ export default function page() {
         {/* Promotional Banner */}
         <Homepage />
         <FeaturedProducts />
-        <Newsletter />
         <Footer />
       </div>
     </>

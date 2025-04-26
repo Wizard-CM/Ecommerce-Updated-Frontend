@@ -56,7 +56,7 @@ const Login = () => {
         };
         Cookies.set("userAuthStatus", JSON.stringify(userSetData));
         
-        ToasterFunction(res, `Welcome ${user.displayName!}`);
+        // ToasterFunction(res, `Welcome ${user.displayName!}`);
         dispatch(setUser(userSetData));
         setTimeout(() => {
           router.push("/");
@@ -77,15 +77,15 @@ const Login = () => {
   };
 
   // Redirect Code If needed
-  if (UserData?._id) {
-    // Keep loading state true during redirection
-    if (!loading) setLoading(true);
-    // Use setTimeout to wait for Redux state to be fully updated
-    setTimeout(() => {
-      router.push("/");
-    }, 100);
-    return <PageLoader height="100vh" />;
-  }
+  // if (UserData?._id) {
+  //   // Keep loading state true during redirection
+  //   if (!loading) setLoading(true);
+  //   // Use setTimeout to wait for Redux state to be fully updated
+  //   setTimeout(() => {
+  //     router.push("/");
+  //   }, 100);
+  //   return <PageLoader height="100vh" />;
+  // }
 
   return (
     <>
