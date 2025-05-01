@@ -81,7 +81,7 @@ export default function UserDropdown({
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute left-0 mt-3 w-48 rounded-md shadow-lg z-20 transform transition ease-out duration-200">
+        <div className="absolute -left-20 md:left-0 mt-3 w-32 lg:w-48 rounded-md shadow-lg z-20 transform transition ease-out duration-200">
           <div className="bg-gradient-to-br from-black to-gray-900 rounded-lg ring-1 ring-indigo-700 ring-opacity-40 shadow-xl overflow-hidden">
             {user?.role == "admin" && (
               <div
