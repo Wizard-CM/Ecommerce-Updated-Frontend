@@ -29,14 +29,14 @@ const Dashboard = () => {
   // const { data, isLoading, isError } = useChartDashboardDataQuery(user?._id);
 
   // Chart Data
-  const topWidgetData = data?.chartData[1];
-  const topWidgetPercentage = data?.chartData[0];
-  const categoryData = data?.chartData[2];
+  // const topWidgetPercentage = data?.chartData[0];
+  const topWidgetData = data?.chartData[0];
+  const categoryData = data?.chartData[1];
   const categoryArray = categoryData ? Object.keys(categoryData) : null;
-  const sixMonthRevenueArray = data?.chartData[4]?.sixMonthRevenueArray;
-  const sixMonthTransactionArray = data?.chartData[4]?.sixMonthTransactionArray;
-  const genderRatio = data?.chartData[3];
-  const latestTransactionData = data?.chartData[5];
+  const sixMonthRevenueArray = data?.chartData[3]?.sixMonthRevenueArray;
+  const sixMonthTransactionArray = data?.chartData[3]?.sixMonthTransactionArray;
+  const genderRatio = data?.chartData[2];
+  const latestTransactionData = data?.chartData[4];
 
   useEffect(() => {
     if (isError) {
