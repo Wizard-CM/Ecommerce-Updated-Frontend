@@ -62,9 +62,11 @@ const Cart = () => {
       (i: productType) => i._id === product._id
     );
 
-    if (cartAddedProduct?.quantity! >= cartAddedProduct?.stock!) {
-      return;
-    }
+    // if (cartAddedProduct?.quantity! >= cartAddedProduct?.stock!) {
+    //   return;
+    // }
+
+    console.log(user?._id,"User's IDDDD")
 
     const res = await addToCartBackend({
       productId: product._id,

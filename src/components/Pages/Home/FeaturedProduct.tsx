@@ -27,21 +27,25 @@ const FeaturedProducts = () => {
       (i: productType) => i._id === product._id
     );
 
-    if (cartAddedProduct?.quantity! >= cartAddedProduct?.stock!) {
-      return;
-    }
+    // if (cartAddedProduct?.quantity! >= cartAddedProduct?.stock!) {
+    //   return;
+    // }
+
+    // console.log("Added from Featured Product section", cartAddedProduct);
+    console.log(user?._id)
 
     const res = await addToCartBackend({
       productId: product._id,
       userId: user?._id!,
     });
+    // console.log("ressssss",res)
     ToasterFunction(res, "Cart Item Successfully Added");
   };
 
   // Get the Products
   useEffect(() => {
     const res = axios.get(
-      `${process.env.NEXT_PUBLIC_VITE_BACKEND_SERVER}/api/v1/product/all?id=65b8fb1c9e0b09e6ef235e45`
+      `${process.env.NEXT_PUBLIC_VITE_BACKEND_SERVER}/api/v1/product/all?id=${user?._id}`
     );
     res.then(({ data }) => {
       const modifiedData = data.productData.map((i: productType) => ({

@@ -22,7 +22,6 @@ export default function UserDropdown({
   };
   // Handler
   const logoutHandler = () => {
-    console.log("logoutHandler");
 
     signOut(auth)
       .then(() => {
@@ -50,7 +49,6 @@ export default function UserDropdown({
     };
   }, []);
 
-  console.log(user?.role, "User role");
 
   return (
     <div className="relative " ref={dropdownRef}>

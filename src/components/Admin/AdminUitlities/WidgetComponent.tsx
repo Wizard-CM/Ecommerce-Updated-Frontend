@@ -1,162 +1,220 @@
-import React, { useState, useEffect } from 'react';
-import { TrendingUp, TrendingDown, Circle } from 'lucide-react';
+import React from 'react';
+import { 
+  BarChart3, 
+  Activity, 
+  Zap, 
+  Award, 
+  TrendingUp, 
+  Hexagon, 
+  Circle, 
+  Triangle, 
+  Square,
+  Diamond,
+  PieChart,
+  ArrowLeftRight, 
+  Package, 
+  Users, 
+  DollarSign,
+  Repeat,
+  ShoppingBag,
+  User,
+} from 'lucide-react';
 
-// Define TypeScript interface for component props
-interface WidgetComponentProps {
+
+// TypeScript interface for the Widget component props
+interface WidgetProps {
   title: string;
-  value: string | number;
-  percentage: string | number;
-  amount?: boolean;
+  value: number;
   color: string;
+  icon?: string;
 }
 
-// Define the component with TypeScript typing
-const WidgetComponent: React.FC<WidgetComponentProps> = ({
-  title,
-  value,
-  percentage: initialPercentage,
-  amount,
+const WidgetComponent: React.FC<WidgetProps> = ({ 
+  title, 
+  value, 
   color,
+  icon = "chart"
 }) => {
-  let percentage = initialPercentage;
-  const subString = "k";
+  // Determine color classes based on prop
+  const colorClasses: Record<string, string> = {
+    purple: "from-purple-500 to-indigo-600",
+    blue: "from-blue-500 to-indigo-600",
+    red: "from-red-500 to-orange-600",
+    green: "from-green-500 to-emerald-600",
+    orange: "from-orange-500 to-amber-600",
+    default: "from-indigo-600 to-purple-600"
+  };
   
-  if (!Number.isInteger(Number(percentage))) {
-    const number = Math.round(Number(percentage));
-    percentage = `${number}`;
-  }
+  const gradientClass = colorClasses[color] || colorClasses.default;
   
-  if (+percentage > 10000) {
-    percentage = `${9999}`;
-  }
+  // Format the value with commas for thousands
+  const formattedValue = new Intl.NumberFormat().format(value);
   
-  if (+percentage < 0 && -10000 > +percentage) {
-    percentage = `${-9999}`;
-  }
+  // Determine which icon to display
+  const renderIcon = () => {
+    switch (icon) {
+      case "user":
+        return <Users size={22} className="text-white" />;
+      case "revenue":
+        return <DollarSign size={22} className="text-white" />;
+      case "transaction":
+        return <ArrowLeftRight size={22} className="text-white" />;
+      default:
+        return <Package size={22} className="text-white" />;
+    }
+  };
 
-  const isPositive = Math.round(+percentage) > 0;
-  const [animate, setAnimate] = useState<boolean>(false);
-
-  useEffect(() => {
-    setAnimate(true);
-    
-    // Add a slight delay to enhance animation effect
-    const timer = setTimeout(() => {
-      setAnimate(true);
-    }, 100);
-    
-    return () => clearTimeout(timer);
-  }, []);
-
+  // Render decorative shapes based on color
+  const renderDecorativeShapes = () => {
+    switch (color) {
+      case "purple":
+        return (
+          <>
+            <Circle size={12} className="text-purple-500/30" />
+            <Diamond size={14} className="text-indigo-600/30" />
+            <Hexagon size={16} className="text-purple-400/30" />
+          </>
+        );
+      case "blue":
+        return (
+          <>
+            <Square size={12} className="text-blue-500/30" />
+            <Circle size={14} className="text-indigo-600/30" />
+            <Diamond size={16} className="text-blue-400/30" />
+          </>
+        );
+      case "green":
+        return (
+          <>
+            <Triangle size={12} className="text-green-500/30" />
+            <Hexagon size={14} className="text-emerald-600/30" />
+            <Circle size={16} className="text-green-400/30" />
+          </>
+        );
+      case "red":
+        return (
+          <>
+            <Diamond size={12} className="text-red-500/30" />
+            <Square size={14} className="text-orange-600/30" />
+            <Triangle size={16} className="text-red-400/30" />
+          </>
+        );
+      case "orange":
+        return (
+          <>
+            <Square size={12} className="text-orange-500/30" />
+            <Circle size={14} className="text-amber-600/30" />
+            <Hexagon size={16} className="text-orange-400/30" />
+          </>
+        );
+      default:
+        return (
+          <>
+            <Circle size={12} className="text-indigo-500/30" />
+            <Hexagon size={14} className="text-purple-600/30" />
+            <Diamond size={16} className="text-indigo-400/30" />
+          </>
+        );
+    }
+  };
+  
   return (
-    <div className="relative overflow-hidden rounded-xl shadow-xl transition-all duration-500 hover:translate-y-1 hover:shadow-2xl bg-gradient-to-br from-black to-gray-900 border  border-white/50 group">
-      {/* Animated glow effect */}
-      <div 
-        className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-700"
-        style={{
-          background: `radial-gradient(circle at center, ${color} 0%, transparent 70%)`,
-          filter: 'blur(15px)'
-        }}
-      ></div>
-      
-      <div className="p-6 relative z-10">
-        <div className="flex justify-between items-start mb-6">
-          <div className="flex flex-col">
-            <p className="text-gray-400 font-medium text-sm uppercase tracking-wider mb-1">{title}</p>
-            <h3 className="text-4xl font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-indigo-400 group-hover:to-purple-400 transition-all duration-300">
-              {amount ? `₹${value}` : value}
-            </h3>
-          </div>
-          
-          <div className="relative flex items-center justify-center">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 rounded-full blur-md"></div>
-            <Circle 
-              size={60}
-              className="text-gray-800/50"
-              strokeWidth={1}
-            />
-            <svg className="absolute inset-0" width="60" height="60" viewBox="0 0 60 60">
-              <circle
-                cx="30"
-                cy="30"
-                r="24"
-                fill="none"
-                stroke={color}
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeDasharray={`${Math.min(Math.abs(Number(percentage)), 100) * 1.51} 151`}
-                strokeDashoffset="0"
-                transform="rotate(-90 30 30)"
-                className="transition-all duration-1500 ease-out"
-                style={{
-                  strokeDasharray: animate ? 
-                    `${typeof percentage == "string" && percentage.includes(subString)
-                      ? Number(+percentage.split("k")[0] / 100) * 151
-                      : (Math.min(Math.abs(Number(percentage)), 100) / 100) * 151} 151` 
-                    : "0 151",
-                  filter: 'drop-shadow(0 0 3px rgba(255,255,255,0.3))'
-                }}
-              />
-            </svg>
-            <span className="absolute font-mono font-semibold text-sm text-white">
-              {percentage}%
-            </span>
-          </div>
+    <div className="w-full max-w-sm">
+      <div className="relative bg-gradient-to-br from-black to-gray-900 rounded-xl shadow-xl overflow-hidden">
+        {/* Gradient border */}
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-600/10 to-indigo-600/20"></div>
+        
+        {/* Decorative SVG background pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <svg width="100%" height="100%" className="absolute">
+            <pattern id={`grid-${color}`} x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" strokeWidth="0.5" className={`text-${color}-500`} />
+            </pattern>
+            <rect x="0" y="0" width="100%" height="100%" fill={`url(#grid-${color})`} />
+          </svg>
         </div>
         
-        <div className="flex items-center mt-4">
-          <div 
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
-              isPositive 
-                ? "bg-gradient-to-r from-green-600/20 to-emerald-600/20 text-green-400 border border-green-500/30" 
-                : "bg-gradient-to-r from-red-600/20 to-pink-600/20 text-red-400 border border-red-500/30"
-            }`}
-          >
-            {isPositive ? (
-              <TrendingUp size={16} className="text-green-400" />
-            ) : (
-              <TrendingDown size={16} className="text-red-400" />
-            )}
-            <p className={`${isPositive ? "text-green-400" : "text-red-400"}`}>
-              {isPositive ? `+${percentage}` : percentage}%
-            </p>
+        {/* Main content */}
+        <div className="relative z-10 p-6">
+          {/* Header with icon */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center">
+              <div className={`p-2 rounded-lg bg-gradient-to-r ${gradientClass} shadow-lg mr-3 ring-1 ring-gray-800`}>
+                {renderIcon()}
+              </div>
+              <h3 className="text-lg font-medium text-white tracking-wide">{title}</h3>
+            </div>
+            
+            {/* Decorative shapes */}
+            <div className="flex space-x-2">
+              {renderDecorativeShapes()}
+            </div>
           </div>
           
-          {/* Animated progress bar */}
-          <div className="ml-4 h-1 flex-1 bg-gray-800 rounded-full overflow-hidden">
-            <div 
-              className={`h-full ${isPositive ? "bg-gradient-to-r from-green-500 to-emerald-500" : "bg-gradient-to-r from-red-500 to-pink-500"} transition-all duration-1000 ease-out`}
-              style={{ 
-                width: animate ? `${Math.min(Math.abs(Number(percentage)), 100)}%` : '0%',
-                opacity: 0.8
-              }}
-            ></div>
+          {/* Value display */}
+          <div className="mb-5">
+            <div className="relative">
+              <h2 className="text-4xl font-bold text-white tracking-tight">
+                {formattedValue}
+              </h2>
+              <div className={`absolute -bottom-2 left-0 h-1 w-12 bg-gradient-to-r ${gradientClass} rounded-full`}></div>
+            </div>
           </div>
+          
+          {/* Custom SVG element based on color */}
+          <div className="relative h-12 w-full mt-4">
+            <svg 
+              viewBox="0 0 200 40" 
+              className="w-full h-full" 
+              preserveAspectRatio="none"
+            >
+              {/* Dynamic background line */}
+              <path 
+                d="M0,20 Q50,30 100,20 Q150,10 200,20" 
+                stroke="rgba(75, 85, 99, 0.3)" 
+                strokeWidth="1.5" 
+                fill="none" 
+              />
+              
+              {/* Colored line */}
+              <path 
+                d="M0,20 Q50,30 100,20 Q150,10 200,20" 
+                stroke={`url(#line-gradient-${color})`} 
+                strokeWidth="2.5" 
+                fill="none" 
+                strokeLinecap="round" 
+              />
+              
+              {/* Gradient definition */}
+              <defs>
+                <linearGradient id={`line-gradient-${color}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style={{stopColor: color === 'purple' ? '#a855f7' : 
+                                            color === 'blue' ? '#3b82f6' : 
+                                            color === 'green' ? '#10b981' : 
+                                            color === 'red' ? '#ef4444' : 
+                                            color === 'orange' ? '#f97316' : '#6366f1'}} />
+                  <stop offset="100%" style={{stopColor: color === 'purple' ? '#4f46e5' : 
+                                             color === 'blue' ? '#4f46e5' : 
+                                             color === 'green' ? '#10b981' : 
+                                             color === 'red' ? '#f97316' : 
+                                             color === 'orange' ? '#f59e0b' : '#a855f7'}} />
+                </linearGradient>
+              </defs>
+              
+              {/* Data points */}
+              <circle cx="0" cy="20" r="3" fill="rgba(255, 255, 255, 0.7)" />
+              <circle cx="50" cy="30" r="3" fill="rgba(255, 255, 255, 0.7)" />
+              <circle cx="100" cy="20" r="3" fill="rgba(255, 255, 255, 0.7)" />
+              <circle cx="150" cy="10" r="3" fill="rgba(255, 255, 255, 0.7)" />
+              <circle cx="200" cy="20" r="3" fill="rgba(255, 255, 255, 0.7)" />
+            </svg>
+          </div>
+          
         </div>
-      </div>
-      
-      {/* Decorative elements */}
-      <div className="absolute top-0 right-0 w-40 h-40 opacity-5 transform rotate-45">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <path 
-            fill={color} 
-            d="M47.7,-57.2C59.9,-47.3,67,-31.6,70.4,-15.2C73.9,1.2,73.8,18.2,66.6,31.1C59.3,44,45,52.8,30.2,58.4C15.3,64.1,-0.1,66.7,-15.8,63.5C-31.5,60.3,-47.5,51.3,-58.2,37.9C-68.9,24.5,-74.4,6.7,-71.8,-9.4C-69.3,-25.5,-58.8,-39.9,-45.6,-49.9C-32.3,-59.8,-16.2,-65.2,0.4,-65.7C17,-66.1,35.5,-67.1,47.7,-57.2Z" 
-            transform="translate(100 100)" 
-          />
-        </svg>
-      </div>
-      
-      <div className="absolute bottom-0 left-0 h-32 w-32 opacity-10 transform -translate-x-1/2 translate-y-1/4">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <path 
-            fill={color} 
-            d="M41.3,-31.7C50.9,-21.2,54.3,-5.3,50.9,8.2C47.5,21.7,37.3,32.9,24.6,39.6C11.9,46.3,-3.3,48.6,-18.7,44.5C-34.1,40.3,-49.6,29.6,-56.2,13.9C-62.9,-1.9,-60.6,-22.7,-49.9,-33.3C-39.2,-43.9,-19.6,-44.3,-2.2,-42.5C15.1,-40.7,31.7,-42.2,41.3,-31.7Z" 
-            transform="translate(100 100)" 
-          />
-        </svg>
       </div>
     </div>
   );
 };
+
 
 export default WidgetComponent;

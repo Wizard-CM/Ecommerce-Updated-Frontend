@@ -47,7 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (user) {
         console.log(user, "inside");
         const data = await getSingleUser(user.uid);
-
+        console.log(data.userData,"User data from context")
         dispatch(setUser(data.userData));
       } else {
         dispatch(notSetUser());

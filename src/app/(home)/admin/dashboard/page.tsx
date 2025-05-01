@@ -53,27 +53,30 @@ const Dashboard = () => {
         <WidgetComponent
           title={"Revenue"}
           value={topWidgetData?.revenue}
-          amount={true}
-          percentage={topWidgetPercentage?.revenuePercentage}
+          // percentage={topWidgetPercentage?.revenuePercentage}
           color={"#6366F1"} // Indigo color that matches our theme
-        />
+          icon="revenue"
+          />
         <WidgetComponent
           title={"Users"}
           value={topWidgetData?.users}
-          percentage={topWidgetPercentage?.userPercentage}
+          // percentage={topWidgetPercentage?.userPercentage}
           color={"#8B5CF6"} // Purple color that matches our theme
-        />
+          icon="user"
+          />
         <WidgetComponent
           title={"Transactions"}
           value={topWidgetData?.transactions}
-          percentage={topWidgetPercentage?.transactionPercentage}
+          // percentage={topWidgetPercentage?.transactionPercentage}
           color={"#EC4899"} // Pink color
-        />
+          icon="transaction"
+          />
         <WidgetComponent
           title={"Products"}
           value={topWidgetData?.products}
-          percentage={topWidgetPercentage?.productPercentage}
+          // percentage={topWidgetPercentage?.productPercentage}
           color={"#10B981"} // Green color
+          icon="products"
         />
       </div>
 

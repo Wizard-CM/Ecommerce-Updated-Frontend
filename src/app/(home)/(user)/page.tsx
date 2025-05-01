@@ -15,11 +15,10 @@ export default function page() {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useSelector((state: rootState) => state.userSlice);
 
-  console.log(user, "User Status");
 
   const router = useRouter();
 
-  // console.log(user, "User logged In");
+  console.log(user, "User logged In");
 
   const getUsers = async () => {
     try {
