@@ -38,6 +38,15 @@ const Dashboard = () => {
   const genderRatio = data?.chartData[2];
   const latestTransactionData = data?.chartData[4];
 
+  console.log(sixMonthRevenueArray,"sixMonthRevenueArray")
+  console.log(sixMonthTransactionArray,"sixMonthTransactionArray")
+
+  if(data){
+
+    console.log(data,"datatatatat")
+  }
+
+
   useEffect(() => {
     if (isError) {
       router.push("/");
@@ -84,9 +93,9 @@ const Dashboard = () => {
       {/* Main container with responsive padding */}
       <div className="w-full  ">
         {/* Main content wrapper */}
-        <div className="flex justify-between gap-2 w-full">
+        <div className="flex flex-col lg:flex-row gap-4 lg:gap-2 justify-between w-full">
           {/* Revenue Chart Section - Full width on mobile */}
-          <div className="w-[72%] bg-gradient-to-br from-black to-gray-900  rounded-2xl shadow-2xl border  border-white/50">
+          <div className="w-full lg:w-[72%] bg-gradient-to-br from-black to-gray-900  rounded-2xl shadow-2xl border  border-white/50">
             <div className="w-full bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-xl overflow-hidden border border-purple-500/30 hover:border-purple-500/50 transition-all duration-300">
               <div className="bg-gradient-to-r from-indigo-600/20 to-purple-600/20 border-b border-indigo-500/30">
                 <h2 className="text-lg sm:text-xl md:text-2xl font-bold py-3 sm:py-5 text-center text-white flex justify-center items-center gap-2">
@@ -129,7 +138,7 @@ const Dashboard = () => {
           </div>
 
           {/* Inventory Panel - Use your existing component */}
-          <div className="w-[27%]">
+          <div className="w-full lg:w-[27%]">
             <InventoryCategories
               categories={categoryArray}
             />
